@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-poppins);
+  --font-matter: var(--font-matter);
+  --font-clash: var(--font-clash);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-poppins), Arial, Helvetica, sans-serif;
+}
+
+/* ---------- Marquee / scrolling-strip animations ---------- */
+/* animation approximated — confirm exact speed/direction against live site */
+
+@keyframes strip-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes strip-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.strip-left {
+  animation: strip-left 18s linear infinite;
+  width: max-content;
+}
+
+.strip-right {
+  animation: strip-right 18s linear infinite;
+  width: max-content;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee {
+  animation: marquee-scroll 22s linear infinite;
+  width: max-content;
+}
+
+/* Team carousel auto-scroll, pauses on hover */
+@keyframes team-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.team-track {
+  animation: team-scroll 40s linear infinite;
+  width: max-content;
+}
+
+.team-track:hover {
+  animation-play-state: paused;
+}
+
+/* Floating social buttons bob */
+@keyframes floatingSmooth {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-floatingSmooth {
+  animation: floatingSmooth 3.2s ease-in-out infinite;
+}
+
+/* Scroll-reveal fade + rise */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.7s ease-out forwards;
+}
