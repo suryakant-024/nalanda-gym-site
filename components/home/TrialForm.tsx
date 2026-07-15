@@ -5,20 +5,28 @@ import ScrollReveal from "@/components/ScrollReveal";
 
 const GOALS = ["Weight Loss", "Muscle Gain", "General Fitness"];
 
+const WEBHOOK_URL = "https://schinchan0024.app.n8n.cloud/webhook/nalanda-trial";
+
 export default function TrialForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const name = String(form.get("name") || "").trim();
+    const email = String(form.get("email") || "").trim();
     const phone = String(form.get("phone") || "").trim();
     const goal = String(form.get("goal") || "");
-    const time = String(form.get("time") || "").trim();
+    const preferredTime = String(form.get("time") || "").trim();
 
-    if (!name || !phone || !goal || !time) {
+    if (!name || !email || !phone || !goal || !preferredTime) {
       setError("Please fill in every field.");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address.");
       return;
     }
     if (!/^[0-9+\-\s]{7,15}$/.test(phone)) {
@@ -27,8 +35,22 @@ export default function TrialForm() {
     }
 
     setError("");
-    // TODO: connect to n8n webhook for lead capture
-    setSubmitted(true);
+    setSubmitting(true);
+    try {
+      const res = await fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, phone, goal, preferredTime }),
+      });
+
+      if (!res.ok) throw new Error(`Webhook responded with ${res.status}`);
+
+      setSubmitted(true);
+    } catch {
+      setError("Something went wrong sending your request. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -44,7 +66,7 @@ export default function TrialForm() {
         <div className="bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 p-6 sm:p-8">
           {submitted ? (
             <p className="text-center text-gray-800 font-medium py-8">
-              Thanks! We&apos;ve received your request — our team will call you shortly to confirm your free trial.
+              Thanks! We&apos;ve received your request and will contact you shortly.
             </p>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -57,8 +79,23 @@ export default function TrialForm() {
                   name="name"
                   type="text"
                   required
-                  className="w-full rounded-full border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  disabled={submitting}
+                  className="w-full rounded-full border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
                   placeholder="Your full name"
+                />
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  disabled={submitting}
+                  className="w-full rounded-full border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+                  placeholder="you@example.com"
                 />
               </div>
               <div>
@@ -70,7 +107,8 @@ export default function TrialForm() {
                   name="phone"
                   type="tel"
                   required
-                  className="w-full rounded-full border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  disabled={submitting}
+                  className="w-full rounded-full border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
                   placeholder="e.g. 9876543210"
                 />
               </div>
@@ -82,8 +120,9 @@ export default function TrialForm() {
                   id="goal"
                   name="goal"
                   required
+                  disabled={submitting}
                   defaultValue=""
-                  className="w-full rounded-full border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                  className="w-full rounded-full border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white disabled:bg-gray-100"
                 >
                   <option value="" disabled>
                     Select a goal
@@ -104,7 +143,8 @@ export default function TrialForm() {
                   name="time"
                   type="text"
                   required
-                  className="w-full rounded-full border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  disabled={submitting}
+                  className="w-full rounded-full border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
                   placeholder="e.g. Weekday mornings"
                 />
               </div>
@@ -113,10 +153,11 @@ export default function TrialForm() {
 
               <button
                 type="submit"
-                className="w-full py-3.5 text-sm sm:text-base bg-black text-white rounded-full transition-transform hover:scale-[1.02] hover:bg-gray-900"
+                disabled={submitting}
+                className="w-full py-3.5 text-sm sm:text-base bg-black text-white rounded-full transition-transform hover:scale-[1.02] hover:bg-gray-900 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
                 style={{ fontWeight: 500 }}
               >
-                Book a Free Trial
+                {submitting ? "Sending..." : "Book a Free Trial"}
               </button>
             </form>
           )}
