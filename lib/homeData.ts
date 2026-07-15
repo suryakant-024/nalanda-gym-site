@@ -58,27 +58,32 @@ export const REELS = [
   { caption: "New PR on deadlift day", img: u("1434682772747-f16d3ea162c3", 500) },
 ];
 
-// PLACEHOLDER testimonial — dummy member quotes, swap for real reviews later
+// PLACEHOLDER testimonial — dummy member quotes, swap for real reviews later.
+// Photos are hot-linked Unsplash stock (verified by visual inspection), not real members.
 export const TESTIMONIALS = [
   {
     quote: "Best gym in the city. The trainers actually care.",
     name: "Rohit S.",
-    role: "Member since 2024",
+    designation: "Member since 2024",
+    src: u("1611672585731-fa10603fb9e0", 600),
   },
   {
     quote: "Lost 12kg in 4 months with their program.",
     name: "Anjali K.",
-    role: "Member since 2023",
+    designation: "Member since 2023",
+    src: u("1550259979-ed79b48d2a30", 600),
   },
   {
     quote: "Great equipment and an amazing community.",
     name: "Vikram R.",
-    role: "Member since 2024",
+    designation: "Member since 2024",
+    src: u("1594737625785-a6cbdabd333c", 600),
   },
   {
     quote: "The free trial sold me instantly. Joined the same day.",
     name: "Neha M.",
-    role: "Member since 2025",
+    designation: "Member since 2025",
+    src: u("1584464491033-06628f3a6b7b", 600),
   },
 ];
 
