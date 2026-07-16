@@ -71,7 +71,7 @@ export default function SocialReels() {
         <div className="flex items-center justify-center gap-6 mt-3 lg:mt-8 z-50">
           <button
             onClick={prev}
-            className="hidden lg:flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-800 transition shadow-sm"
+            className="hidden lg:flex items-center justify-center w-12 h-12 rounded-full bg-black hover:bg-gray-800 text-white transition shadow-sm"
             aria-label="Previous"
           >
             ←
@@ -90,7 +90,7 @@ export default function SocialReels() {
           </div>
           <button
             onClick={next}
-            className="hidden lg:flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-800 transition shadow-sm"
+            className="hidden lg:flex items-center justify-center w-12 h-12 rounded-full bg-black hover:bg-gray-800 text-white transition shadow-sm"
             aria-label="Next"
           >
             →
